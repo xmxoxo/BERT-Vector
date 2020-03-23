@@ -5,7 +5,7 @@ __author__ = 'xmxoxo<xmxoxo@qq.com>'
 
 '''
 BERT预训练模型字向量提取工具
-版本： v 0.2.2
+版本： v 0.3.0
 更新:  2020/3/23
 git: https://github.com/xmxoxo/BERT-Vector/
 
@@ -18,8 +18,10 @@ import numpy as np
 import os
 import sys
 import traceback
+import pickle
 
-gblVersion = '0.2.2'
+
+gblVersion = '0.3.0'
 # 如果模型的文件名不同，可修改此处
 model_name = 'bert_model.ckpt'
 vocab_name = 'vocab.txt'
@@ -58,13 +60,22 @@ class bert_embdding():
 
         print('文本字典长度:%d, 正在提取字向量...' % len(txt_lst))
         count = 0
-        with open(out_file, 'w', encoding='utf-8') as out:  
-            for word in txt_lst:
-                v = self.get_embdding(word)
-                if not (v is None):
-                    count += 1
-                    out.write(word + " " + " ".join([str(i) for i in v])+"\n")
+        #with open(out_file, 'w', encoding='utf-8') as out: 
+        # 使用字典存储，使用时更加方便。 2020/3/23
+        lst_vector = dict()
+        for word in txt_lst:
+            v = self.get_embdding(word)
+            if not (v is None):
+                count += 1
+                #out.write(word + " " + " ".join([str(i) for i in v])+"\n")
+                #lst_vector += [[word,v]]
+                lst_vector[word] = v
 
+        # 改为使用pickle保存文件 2020/3/23
+        #print(list(lst_vector.keys())[0],lst_vector[list(lst_vector.keys())[0]])
+        with open(out_file, 'wb') as out: 
+            pickle.dump(lst_vector, out, 2)
+        
         print('字向量共提取:%d个' % count)
 
     # get all files and floders in a path
@@ -125,7 +136,7 @@ def main_cli ():
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + gblVersion )
     parser.add_argument('--model_path', default='', required=True, type=str, help='BERT预训练模型的目录')
     parser.add_argument('--in_file', default='', required=True, type=str, help='待提取的文件名或者目录名')
-    parser.add_argument('--out_file', default='./bert_embedding.txt', type=str,  help='输出文件名')
+    parser.add_argument('--out_file', default='./bert_embedding.pkl', type=str,  help='输出文件名')
     parser.add_argument('--ext', default=['csv','txt'], type=str, nargs='+', help='指定目录时读取的数据文件扩展名')
 
     args = parser.parse_args()
@@ -144,7 +155,7 @@ def main_cli ():
         sys.exit()
 
     if not (os.path.isfile(in_file) or os.path.isdir(in_file)):
-        print('数据文件:不存在,请检查:%s')
+        print('数据文件不存在,请检查:%s' % in_file)
         sys.exit()
     print('\nBERT 字向量提取工具 V' + gblVersion )
     print('-'*40)
@@ -152,7 +163,7 @@ def main_cli ():
     bertemb = bert_embdding(model_path=model_path)
     # 针对文件和目录分别处理 2020/3/23 by xmxoxo
     if os.path.isfile(in_file):
-        txt_all = open(in_file).read()
+        txt_all = open(in_file,'r', encoding='utf-8').read()
         bertemb.export(txt_all, out_file=out_file)
     if os.path.isdir(in_file):
         bertemb.export_path(in_file, ext=ext, out_file=out_file)
