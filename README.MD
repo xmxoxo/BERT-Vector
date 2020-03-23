@@ -14,23 +14,34 @@ BERT预训练模型字向量提取工具
 ## 向量文件格式 
 
 文件格式为pkl，数据格式为dic字典格式，更方便使用。(v0.3版本)
+
 key: 字符
+
 value: 对应的向量,768大小
 
 
 ## 参数说明
 
 参数说明：
+
+```
 --model_path    BERT预训练模型存放的目录，必填；
+
 --in_file       待提取的样本文件名或者目录名，必填；
+
 --out_file      提取后保存的向量文件,可选项，默认为'./bert_embedding.pkl'
+
 --ext           当指定为目录时，可选项，要处理的文件后缀，默认为['csv','txt']
+
+```
+
 
 ## 调用示例
 
 命令行例子：
 
 处理单个文件`./data/train_interger.csv`，保存到`./data/need_bertembedding.pkl`
+
 ```bash
 python BERTVector.py \
     --model_path=/mnt/sda1/models/chinese_L-12_H-768_A-12/ \
