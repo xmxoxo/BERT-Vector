@@ -74,6 +74,10 @@ python load_vector.py
 
 运行结果：
 
+![运行截图](https://github.com/xmxoxo/BERT-Vector/blob/master/images/test.png)
+
+代码输出如下：
+
 ```
 17:35:27.08|X:>load_vector.py
 -----------------字向量加载------------------
@@ -91,7 +95,7 @@ python load_vector.py
 待编码句子：
 今日数据趣谈：阿杜比肩魔术师 热火中锋另类纪录新浪体育讯北京时间4月28日
 
-本救命中简单把各字的向量相加作为句向量...
+本示例中简单把各字的向量相加作为句向量...
 句向量(仅输出前20维):
 [-0.31147036 -0.04251522  0.16138141 -0.39930761 -1.07815197  0.06680285
  -0.1597157  -0.37606054 -0.42281876  0.34424412 -0.05901627  0.34751215
@@ -100,6 +104,10 @@ python load_vector.py
 ```
 
 也可以使用以下命令生成测试的向量字典：
+
+其中`d:\\model\chinese_L-12_H-768_A-12`是BERT预训练模型的目录
+
 ```
 BERTVector.py --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/ --out_file=test/test.pkl
 ```
+
