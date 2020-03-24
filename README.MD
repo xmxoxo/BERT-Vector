@@ -2,11 +2,14 @@
 
 
 BERT预训练模型字向量提取工具
+
 版本： v 0.3.0
+
 更新:  2020/3/23 17:49
 
 ## 工具说明
 本工具直接读取BERT预训练模型，从中提取样本文件中所有使用到字向量，保存成向量文件，为后续模型提供embdding。
+
 本工具直接读取预训练模型，不需要其它的依赖，同时把样本中所有
 出现的字符对应的字向量全部提取，后续的模型可以非常快速进行embdding，
 不再需要庞大的预训练模型或者bert-as-service服务了。
@@ -50,7 +53,7 @@ python BERTVector.py \
 
 ```
 
-处理目录下的所有tsv,txt文件,默认保存为:./need_bertembedding.txt
+处理目录下的所有tsv,txt文件,默认保存为:./need_bertembedding.pkl
 
 ```bash
 python BERTVector.py \
