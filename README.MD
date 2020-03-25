@@ -3,9 +3,9 @@
 
 BERT预训练模型字向量提取工具
 
-版本： v 0.3.0
+版本： v 0.3.2
 
-更新:  2020/3/23 17:49
+更新:  2020/3/25 11:11
 
 ## 工具说明
 本工具直接读取BERT预训练模型，从中提取样本文件中所有使用到字向量，保存成向量文件，为后续模型提供embdding。
@@ -36,12 +36,15 @@ value: 对应的向量,768大小
 
 --ext           当指定为目录时，可选项，要处理的文件后缀，默认为['csv','txt']
 
+--fmt           指定输出文件的格式，可设置为'txt'或者'pkl', 默认为pkl
 ```
 
 
 ## 调用示例
 
 命令行例子：
+
+例子一：
 
 处理单个文件`./data/train_interger.csv`，保存到`./data/need_bertembedding.pkl`
 
@@ -53,6 +56,8 @@ python BERTVector.py \
 
 ```
 
+例子二：
+
 处理目录下的所有tsv,txt文件,默认保存为:./need_bertembedding.pkl
 
 ```bash
@@ -62,6 +67,23 @@ python BERTVector.py \
     --ext tsv txt
 ```
 
+例子三：
+处理文件:`dat.csv`,保存为txt格式，输出文件名为:./need_bertembedding
+
+```bash
+python BERTVector.py \
+    --model_path=/mnt/sda1/models/chinese_L-12_H-768_A-12/ \
+    --in_file=./dat.csv \
+    --out_file=./need_bertembedding \
+    --fmt=txt
+```
+
+## 应用案例
+
+使用BERT预训练模型的向量进行编码，可再搭建LSTM，textCNN等模型进行文本分类。
+
+[实际案例: BERT字向量+LSTM文本分类模型 ](https://github.com/mathCrazyy/text_classify)
+https://github.com/mathCrazyy/text_classify
 
 ## 字向量调用示例
 生成的字向量字典可以方便地为文本进行编码。

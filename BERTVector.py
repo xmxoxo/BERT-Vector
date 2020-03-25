@@ -5,8 +5,8 @@ __author__ = 'xmxoxo<xmxoxo@qq.com>'
 
 '''
 BERT预训练模型字向量提取工具
-版本： v 0.3.0
-更新:  2020/3/23
+版本： v 0.3.2
+更新:  2020/3/25 11:11
 git: https://github.com/xmxoxo/BERT-Vector/
 
 '''
@@ -21,14 +21,14 @@ import traceback
 import pickle
 
 
-gblVersion = '0.3.0'
+gblVersion = '0.3.2'
 # 如果模型的文件名不同，可修改此处
 model_name = 'bert_model.ckpt'
 vocab_name = 'vocab.txt'
 
 # BERT embdding提取类 
 class bert_embdding(): 
-    def __init__(self, model_path=''):
+    def __init__(self, model_path='', fmt='pkl'):
         # 模型和词表的文件名
         ckpt_path = os.path.join(model_path, model_name)
         vocab_file = os.path.join(model_path, vocab_name)
@@ -45,6 +45,9 @@ class bert_embdding():
         print('embeddings size: %s' % str(self.emb.shape))
         print('词表大小：%d' % len(self.vocab))
 
+        # 兼容不同格式
+        self.fmt=fmt
+
     # 取出指定字符的embdding,返回向量
     def get_embdding (self, char):
         if char in self.vocab:
@@ -60,22 +63,30 @@ class bert_embdding():
 
         print('文本字典长度:%d, 正在提取字向量...' % len(txt_lst))
         count = 0
-        #with open(out_file, 'w', encoding='utf-8') as out: 
-        # 使用字典存储，使用时更加方便。 2020/3/23
-        lst_vector = dict()
-        for word in txt_lst:
-            v = self.get_embdding(word)
-            if not (v is None):
-                count += 1
-                #out.write(word + " " + " ".join([str(i) for i in v])+"\n")
-                #lst_vector += [[word,v]]
-                lst_vector[word] = v
+        # 可选择输出哪种格式 2020/3/25 
+        if self.fmt=='pkl':
+            print('正在保存为pkl格式文件...')
+            # 使用字典存储，使用时更加方便。 2020/3/23
+            lst_vector = dict()
+            for word in txt_lst:
+                v = self.get_embdding(word)
+                if not (v is None):
+                    count += 1
+                    lst_vector[word] = v
 
-        # 改为使用pickle保存文件 2020/3/23
-        #print(list(lst_vector.keys())[0],lst_vector[list(lst_vector.keys())[0]])
-        with open(out_file, 'wb') as out: 
-            pickle.dump(lst_vector, out, 2)
-        
+            # 改为使用pickle保存文件 2020/3/23
+            with open(out_file, 'wb') as out: 
+                pickle.dump(lst_vector, out, 2)
+
+        if self.fmt=='txt':
+            print('正在保存为txt格式文件...')
+            with open(out_file, 'w', encoding='utf-8') as out: 
+                for word in txt_lst:
+                    v = self.get_embdding(word)
+                    if not (v is None):
+                        count += 1
+                        out.write(word + " " + " ".join([str(i) for i in v])+"\n")
+
         print('字向量共提取:%d个' % count)
 
     # get all files and floders in a path
@@ -123,6 +134,7 @@ class bert_embdding():
                     tmp = f.read()
                 txt_all += list(set(tmp))
                 txt_all = list(set(txt_all))
+            
             self.export(txt_all, out_file=out_file)
 
         except Exception as e :
@@ -138,6 +150,7 @@ def main_cli ():
     parser.add_argument('--in_file', default='', required=True, type=str, help='待提取的文件名或者目录名')
     parser.add_argument('--out_file', default='./bert_embedding.pkl', type=str,  help='输出文件名')
     parser.add_argument('--ext', default=['csv','txt'], type=str, nargs='+', help='指定目录时读取的数据文件扩展名')
+    parser.add_argument('--fmt', default='pkl', type=str, help='输出文件的格式,可设置txt或者pkl, 默认为pkl')
 
     args = parser.parse_args()
 
@@ -149,7 +162,14 @@ def main_cli ():
     in_file = args.in_file
     # 指定的扩展名
     ext = args.ext
+    # 文件格式
+    fmt = args.fmt
+    if not fmt in ['pkl', 'txt']:
+        fmt='pkl'
     
+    if fmt=='txt' and out_file[-4:]=='.pkl':
+        out_file = out_file[:-3] + 'txt'
+
     if not os.path.isdir(model_path):
         print('模型目录不存在,请检查:%s' % model_path)
         sys.exit()
@@ -160,7 +180,7 @@ def main_cli ():
     print('\nBERT 字向量提取工具 V' + gblVersion )
     print('-'*40)
    
-    bertemb = bert_embdding(model_path=model_path)
+    bertemb = bert_embdding(model_path=model_path, fmt=fmt)
     # 针对文件和目录分别处理 2020/3/23 by xmxoxo
     if os.path.isfile(in_file):
         txt_all = open(in_file,'r', encoding='utf-8').read()
