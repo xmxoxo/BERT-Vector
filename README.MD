@@ -72,9 +72,9 @@ value: 对应的向量,768大小
 
 ## 调用示例
 
-命令行例子：
+命令行示例：
 
-例子一：
+示例一：
 
 处理单个文件`./data/train_interger.csv`，保存到`./data/need_bertembedding.pkl`
 
@@ -86,7 +86,7 @@ python BERTVector.py \
 
 ```
 
-例子二：
+示例二：
 
 处理目录下的所有tsv,txt文件,默认保存为:./need_bertembedding.pkl
 
@@ -97,9 +97,8 @@ python BERTVector.py \
     --ext tsv txt
 ```
 
-例子三：
+示例三：
 处理文件:`dat.csv`,保存为txt格式，输出文件名为:./need_bertembedding
-
 ```bash
 python BERTVector.py \
     --model_path=/mnt/sda1/models/chinese_L-12_H-768_A-12/ \
@@ -108,24 +107,13 @@ python BERTVector.py \
     --fmt=txt
 ```
 
-## 应用案例
-
-使用BERT预训练模型的向量进行编码，可再搭建LSTM，textCNN等模型进行文本分类。
-
-[实际案例: BERT字向量+LSTM文本分类模型 ](https://github.com/mathCrazyy/text_classify)
-https://github.com/mathCrazyy/text_classify
-
-注:该案例使用参数`--fmt=txt`生成输出文件。
-
-## 字向量调用示例
+## 测试数据及示例
 
 先使用以下命令生成测试的向量字典：
-
-其中`d:\\model\chinese_L-12_H-768_A-12`是BERT预训练模型的目录
-
 ```
 BERTVector.py --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/test.txt --out_file=test/test.pkl
 ```
+其中`d:\\model\chinese_L-12_H-768_A-12`是BERT预训练模型的目录
 
 
 生成的字向量字典可以方便地为文本进行编码。
@@ -168,7 +156,7 @@ python load_vector.py
 ```
 
 
-## 向量使用样例
+## 补充使用示例 v0.3.3
 
 生成了句向量，计算句子之间的相似度；
 
@@ -187,7 +175,12 @@ python load_vector.py
 
 注意：每次生成的图有可能不一样。
 
-```
-cd test
-python load_vector.py
-```
+
+## 应用案例
+
+使用BERT预训练模型的向量进行编码，可再搭建LSTM，textCNN等模型进行文本分类。
+
+[实际案例: BERT字向量+LSTM文本分类模型 ](https://github.com/mathCrazyy/text_classify)
+https://github.com/mathCrazyy/text_classify
+
+注:该案例使用参数`--fmt=txt`生成输出文件。
