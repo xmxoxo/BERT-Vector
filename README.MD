@@ -3,9 +3,25 @@
 
 BERT预训练模型字向量提取工具
 
-版本： v 0.3.2
+版本： v 0.3.3
 
 更新:  2020/3/25 11:11
+
+## 升级日志 
+v0.3.3
++ 增加了测试的样本及使用示例：短句相似度，词向量分布图等；
+
+v0.3.2
++ 同时兼容txt,pkl两种格式输出；
+
+v0.3 
++ 使用pkl格式保存输出文件；
+- 去掉了txt的格式输出；
++ 参数`--in_file`可指定文件或者目录，自动识别处理；
+
+v0.2
++ 可对单个数据文件进行处理；
+
 
 ## 工具说明
 本工具直接读取BERT预训练模型，从中提取样本文件中所有使用到字向量，保存成向量文件，为后续模型提供embdding。
@@ -99,7 +115,19 @@ python BERTVector.py \
 [实际案例: BERT字向量+LSTM文本分类模型 ](https://github.com/mathCrazyy/text_classify)
 https://github.com/mathCrazyy/text_classify
 
+注:该案例使用参数`--fmt=txt`生成输出文件。
+
 ## 字向量调用示例
+
+先使用以下命令生成测试的向量字典：
+
+其中`d:\\model\chinese_L-12_H-768_A-12`是BERT预训练模型的目录
+
+```
+BERTVector.py --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/test.txt --out_file=test/test.pkl
+```
+
+
 生成的字向量字典可以方便地为文本进行编码。
 示例文件及数据在test目录下,可运行以下命令查看
 
@@ -139,11 +167,27 @@ python load_vector.py
   0.10145024  0.55525893]
 ```
 
-也可以使用以下命令生成测试的向量字典：
 
-其中`d:\\model\chinese_L-12_H-768_A-12`是BERT预训练模型的目录
+## 向量使用样例
+
+生成了句向量，计算句子之间的相似度；
+
+生成词向量，将词向量显示到二维和三维分布图中展示；
+
+![运行截图](https://github.com/xmxoxo/BERT-Vector/blob/master/images/run_figure.png)
+
+
+![词语二维图](https://github.com/xmxoxo/BERT-Vector/blob/master/images/figure2d.png)
+![词语二维图-放大](https://github.com/xmxoxo/BERT-Vector/blob/master/images/Figure_1.png)
+
+![词语三维图](https://github.com/xmxoxo/BERT-Vector/blob/master/images/figure3d.png)
+
+
+请运行例子自行生成：
+
+注意：每次生成的图有可能不一样。
 
 ```
-BERTVector.py --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/ --out_file=test/test.pkl
+cd test
+python load_vector.py
 ```
-
