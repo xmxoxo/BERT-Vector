@@ -12,7 +12,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='BERTVector',
-    version='0.3.3',
+    version='0.3.6',
     description='extract vector from BERT pre-train model',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -41,6 +41,11 @@ setuptools.setup(
     project_urls={  # 项目相关的额外链接
         'Blog': 'https://blog.csdn.net/xmxoxo',
     },
+    entry_points={
+        'console_scripts': [
+            'BERTVector = BERTVector.BERTVector:main_cli', #注意 mypackage是命令名称，=后面的是包名以及函数名
+            ]
+        }
 )
 
 

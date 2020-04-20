@@ -3,11 +3,14 @@
 
 BERT预训练模型字向量提取工具
 
-版本： v 0.3.3
+版本： v 0.3.6
 
-更新:  2020/3/25 11:11
+更新:  2020/4/20 15:04
 
 ## 升级日志 
+v0.3.6
++ 发布到pypi中，可直接在命令行使用；
+
 v0.3.3
 + 增加了测试的样本及使用示例：短句相似度，词向量分布图等；
 
@@ -23,12 +26,19 @@ v0.2
 + 可对单个数据文件进行处理；
 
 
-## 工具说明
-本工具直接读取BERT预训练模型，从中提取样本文件中所有使用到字向量，保存成向量文件，为后续模型提供embdding。
 
-本工具直接读取预训练模型，不需要其它的依赖，同时把样本中所有
-出现的字符对应的字向量全部提取，后续的模型可以非常快速进行embdding，
-不再需要庞大的预训练模型或者bert-as-service服务了。
+## 工具说明
+本工具直接读取BERT预训练模型，从中提取样本文件中所有使用到字向量，保存成向量文件，为后续模型提供字向量。
+
+本工具直接读取预训练模型，不需要其它的依赖，同时把样本中所有出现的字符对应的字向量全部提取，
+后续的模型可以非常快速进行索引，生成自己的句向量，不再需要庞大的预训练模型或者bert-as-service服务了。
+
+工具安装：
+
+```
+pip install BERTVector
+```
+
 
 ## 输出文件格式 
 
@@ -79,7 +89,7 @@ value: 对应的向量,768大小
 处理单个文件`./data/train_interger.csv`，保存到`./data/need_bertembedding.pkl`
 
 ```bash
-python BERTVector.py \
+BERTVector \
     --model_path=/mnt/sda1/models/chinese_L-12_H-768_A-12/ \
     --in_file=./data/train_interger.csv \
     --out_file=./data/need_bertembedding.pkl
@@ -91,7 +101,7 @@ python BERTVector.py \
 处理目录下的所有tsv,txt文件,默认保存为:./need_bertembedding.pkl
 
 ```bash
-python BERTVector.py \
+BERTVector \
     --model_path=/mnt/sda1/models/chinese_L-12_H-768_A-12/ \
     --in_file=./data/ \
     --ext tsv txt
@@ -100,7 +110,7 @@ python BERTVector.py \
 示例三：
 处理文件:`dat.csv`,保存为txt格式，输出文件名为:./need_bertembedding
 ```bash
-python BERTVector.py \
+BERTVector \
     --model_path=/mnt/sda1/models/chinese_L-12_H-768_A-12/ \
     --in_file=./dat.csv \
     --out_file=./need_bertembedding \
@@ -109,9 +119,11 @@ python BERTVector.py \
 
 ## 测试数据及示例
 
+示例文件跟随项目安装在python的目录下： `\Lib\site-packages\BERTVector\test` 
+
 先使用以下命令生成测试的向量字典：
 ```
-BERTVector.py --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/test.txt --out_file=test/test.pkl
+BERTVector --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/test.txt --out_file=test/test.pkl
 ```
 其中`d:\\model\chinese_L-12_H-768_A-12`是BERT预训练模型的目录
 
