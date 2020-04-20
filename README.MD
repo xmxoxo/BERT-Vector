@@ -1,82 +1,82 @@
-# BERTԤѵ��ģ����������ȡ����
+# BERT预训练模型字向量提取工具
 
 
-BERTԤѵ��ģ����������ȡ����
+BERT预训练模型字向量提取工具
 
-�汾�� v 0.3.3
+版本： v 0.3.3
 
-����:  2020/3/25 11:11
+更新:  2020/3/25 11:11
 
-## ������־ 
+## 升级日志 
 v0.3.3
-+ �����˲��Ե�������ʹ��ʾ�����̾����ƶȣ��������ֲ�ͼ�ȣ�
++ 增加了测试的样本及使用示例：短句相似度，词向量分布图等；
 
 v0.3.2
-+ ͬʱ����txt,pkl���ָ�ʽ�����
++ 同时兼容txt,pkl两种格式输出；
 
 v0.3 
-+ ʹ��pkl��ʽ��������ļ���
-- ȥ����txt�ĸ�ʽ�����
-+ ����`--in_file`��ָ���ļ�����Ŀ¼���Զ�ʶ������
++ 使用pkl格式保存输出文件；
+- 去掉了txt的格式输出；
++ 参数`--in_file`可指定文件或者目录，自动识别处理；
 
 v0.2
-+ �ɶԵ��������ļ����д�����
++ 可对单个数据文件进行处理；
 
 
-## ����˵��
-������ֱ�Ӷ�ȡBERTԤѵ��ģ�ͣ�������ȡ�����ļ�������ʹ�õ�������������������ļ���Ϊ����ģ���ṩembdding��
+## 工具说明
+本工具直接读取BERT预训练模型，从中提取样本文件中所有使用到字向量，保存成向量文件，为后续模型提供embdding。
 
-������ֱ�Ӷ�ȡԤѵ��ģ�ͣ�����Ҫ������������ͬʱ������������
-���ֵ��ַ���Ӧ��������ȫ����ȡ��������ģ�Ϳ��Էǳ����ٽ���embdding��
-������Ҫ�Ӵ��Ԥѵ��ģ�ͻ���bert-as-service�����ˡ�
+本工具直接读取预训练模型，不需要其它的依赖，同时把样本中所有
+出现的字符对应的字向量全部提取，后续的模型可以非常快速进行embdding，
+不再需要庞大的预训练模型或者bert-as-service服务了。
 
-## ����ļ���ʽ 
+## 输出文件格式 
 
-֧��txt��pkl�����ļ���ʽ��������ѡ��Ĭ��Ϊpkl��ʽ�� (v0.3.2�汾)
+支持txt和pkl两种文件格式，可自由选择，默认为pkl格式。 (v0.3.2版本)
 
-txt��ʽΪ��
+txt格式为：
 
-һ��һ���ַ�����,�м�ʹ�ÿո�ָ��� 
+一行一个字符向量,中间使用空格分隔； 
 
-��ʽΪ���ַ� 768��С���� 
+格式为：字符 768大小向量 
 
-���磺 
+例如： 
 
 ```
 ! 0.06241071 -0.012108288 0.035899848....
 ```
 
-�ļ���ʽΪpkl�����ݸ�ʽΪdic�ֵ��ʽ��������ʹ�á�(v0.3�汾)
+文件格式为pkl，数据格式为dic字典格式，更方便使用。(v0.3版本)
 
-key: �ַ�
+key: 字符
 
-value: ��Ӧ������,768��С
+value: 对应的向量,768大小
 
 
-## ����˵��
+## 参数说明
 
-����˵����
+参数说明：
 
 ```
---model_path    BERTԤѵ��ģ�ʹ�ŵ�Ŀ¼�����
+--model_path    BERT预训练模型存放的目录，必填；
 
---in_file       ����ȡ�������ļ�������Ŀ¼�������
+--in_file       待提取的样本文件名或者目录名，必填；
 
---out_file      ��ȡ�󱣴�������ļ�,��ѡ�Ĭ��Ϊ'./bert_embedding.pkl'
+--out_file      提取后保存的向量文件,可选项，默认为'./bert_embedding.pkl'
 
---ext           ��ָ��ΪĿ¼ʱ����ѡ�Ҫ�������ļ���׺��Ĭ��Ϊ['csv','txt']
+--ext           当指定为目录时，可选项，要处理的文件后缀，默认为['csv','txt']
 
---fmt           ָ������ļ��ĸ�ʽ��������Ϊ'txt'����'pkl', Ĭ��Ϊpkl
+--fmt           指定输出文件的格式，可设置为'txt'或者'pkl', 默认为pkl
 ```
 
 
-## ����ʾ��
+## 调用示例
 
-������ʾ����
+命令行示例：
 
-ʾ��һ��
+示例一：
 
-���������ļ�`./data/train_interger.csv`�����浽`./data/need_bertembedding.pkl`
+处理单个文件`./data/train_interger.csv`，保存到`./data/need_bertembedding.pkl`
 
 ```bash
 python BERTVector.py \
@@ -86,9 +86,9 @@ python BERTVector.py \
 
 ```
 
-ʾ������
+示例二：
 
-����Ŀ¼�µ�����tsv,txt�ļ�,Ĭ�ϱ���Ϊ:./need_bertembedding.pkl
+处理目录下的所有tsv,txt文件,默认保存为:./need_bertembedding.pkl
 
 ```bash
 python BERTVector.py \
@@ -97,8 +97,8 @@ python BERTVector.py \
     --ext tsv txt
 ```
 
-ʾ������
-�����ļ�:`dat.csv`,����Ϊtxt��ʽ������ļ���Ϊ:./need_bertembedding
+示例三：
+处理文件:`dat.csv`,保存为txt格式，输出文件名为:./need_bertembedding
 ```bash
 python BERTVector.py \
     --model_path=/mnt/sda1/models/chinese_L-12_H-768_A-12/ \
@@ -107,48 +107,48 @@ python BERTVector.py \
     --fmt=txt
 ```
 
-## �������ݼ�ʾ��
+## 测试数据及示例
 
-��ʹ�������������ɲ��Ե������ֵ䣺
+先使用以下命令生成测试的向量字典：
 ```
 BERTVector.py --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/test.txt --out_file=test/test.pkl
 ```
-����`d:\\model\chinese_L-12_H-768_A-12`��BERTԤѵ��ģ�͵�Ŀ¼
+其中`d:\\model\chinese_L-12_H-768_A-12`是BERT预训练模型的目录
 
 
-���ɵ��������ֵ���Է����Ϊ�ı����б��롣
-ʾ���ļ���������testĿ¼��,��������������鿴
+生成的字向量字典可以方便地为文本进行编码。
+示例文件及数据在test目录下,可运行以下命令查看
 
 ```
 cd test
 python load_vector.py
 ```
 
-���н����
+运行结果：
 
-![���н�ͼ](https://github.com/xmxoxo/BERT-Vector/blob/master/images/test.png)
+![运行截图](https://github.com/xmxoxo/BERT-Vector/blob/master/images/test.png)
 
-����������£�
+代码输出如下：
 
 ```
 17:35:27.08|X:>load_vector.py
------------------����������------------------
-�ֵ��С��221
-����ά��:768
+-----------------字向量加载------------------
+字典大小：221
+向量维度:768
 
-�ֵ��׸�Ԫ�أ�
-�ַ�:(
-����(�����ǰ20ά):
+字典首个元素：
+字符:(
+向量(仅输出前20维):
 [-0.0701572  -0.02538603  0.01186333  0.03037252 -0.01405589  0.04111631
  -0.00601521  0.08385976 -0.06300574  0.06307469 -0.08003023  0.01581223
  -0.0285087  -0.04477277  0.0110429   0.05696263  0.00558841  0.05059543
   0.01589187  0.01623219]
------------------������ʾ��------------------
-��������ӣ�
-��������Ȥ̸�����űȼ�ħ��ʦ �Ȼ��з������¼��������Ѷ����ʱ��4��28��
+-----------------句向量示例------------------
+待编码句子：
+今日数据趣谈：阿杜比肩魔术师 热火中锋另类纪录新浪体育讯北京时间4月28日
 
-��ʾ���м򵥰Ѹ��ֵ����������Ϊ������...
-������(�����ǰ20ά):
+本示例中简单把各字的向量相加作为句向量...
+句向量(仅输出前20维):
 [-0.31147036 -0.04251522  0.16138141 -0.39930761 -1.07815197  0.06680285
  -0.1597157  -0.37606054 -0.42281876  0.34424412 -0.05901627  0.34751215
  -1.04583078 -0.50036957 -0.17383758  0.54849081  0.13344521 -0.02983405
@@ -156,31 +156,45 @@ python load_vector.py
 ```
 
 
-## ����ʹ��ʾ�� v0.3.3
+## 补充使用示例 v0.3.3
 
-�����˾��������������֮������ƶȣ�
+生成了句向量，计算句子之间的相似度；
+```
+----------------余弦相似度计算-----------------
+[基金投资的热度近期有所回升] 与 [新浪体育纪录另类热火中锋] 的相似度: 0.4444
+[基金投资的热度近期有所回升] 与 [基金投资的热度近期有所回升] 的相似度: 1.0000
+[基金投资的热度近期有所回升] 与 [封闭式基金折价率近期有所上涨] 的相似度: 0.7164
+[基金投资的热度近期有所回升] 与 [今日数据趣谈：阿杜比肩魔术师 热火中锋另类纪录新浪体育讯北京时间4月28日] 的相似度: 0.510
+4
+[基金投资的热度近期有所回升] 与 [以下是今日比赛中诞生的一些有趣数据] 的相似度: 0.5744
+[基金投资的热度近期有所回升] 与 [最年轻纪录属于“魔术师”约翰逊，他1980年总决赛对阵76人得到42分，] 的相似度: 0.4471
+[基金投资的热度近期有所回升] 与 [首次有三人组合在季后赛做到这一点] 的相似度: 0.5647
+[基金投资的热度近期有所回升] 与 [安东尼此役打了38分59秒没有任何运动战出手] 的相似度: 0.4799
+[基金投资的热度近期有所回升] 与 [本周受权重股业绩超市场预期] 的相似度: 0.5688
+[基金投资的热度近期有所回升] 与 [券商研究机构在本周密集发布二季度的基金投资策略报告] 的相似度: 0.6885
+```
 
-���ɴ�����������������ʾ����ά����ά�ֲ�ͼ��չʾ��
+生成词向量，将词向量显示到二维和三维分布图中展示；
 
-![���н�ͼ](https://github.com/xmxoxo/BERT-Vector/blob/master/images/run_figure.png)
-
-
-![�����άͼ](https://github.com/xmxoxo/BERT-Vector/blob/master/images/figure2d.png)
-![�����άͼ-�Ŵ�](https://github.com/xmxoxo/BERT-Vector/blob/master/images/Figure_1.png)
-
-![������άͼ](https://github.com/xmxoxo/BERT-Vector/blob/master/images/figure3d.png)
+![运行截图](https://github.com/xmxoxo/BERT-Vector/blob/master/images/run_figure.png)
 
 
-�����������������ɣ�
+![词语二维图](https://github.com/xmxoxo/BERT-Vector/blob/master/images/figure2d.png)
+![词语二维图-放大](https://github.com/xmxoxo/BERT-Vector/blob/master/images/Figure_1.png)
 
-ע�⣺ÿ�����ɵ�ͼ�п��ܲ�һ����
+![词语三维图](https://github.com/xmxoxo/BERT-Vector/blob/master/images/figure3d.png)
 
 
-## Ӧ�ð���
+请运行例子自行生成：
 
-ʹ��BERTԤѵ��ģ�͵��������б��룬���ٴLSTM��textCNN��ģ�ͽ����ı����ࡣ
+注意：每次生成的图有可能不一样。
 
-[ʵ�ʰ���: BERT������+LSTM�ı�����ģ�� ](https://github.com/mathCrazyy/text_classify)
+
+## 应用案例
+
+使用BERT预训练模型的向量进行编码，可再搭建LSTM，textCNN等模型进行文本分类。
+
+[实际案例: BERT字向量+LSTM文本分类模型 ](https://github.com/mathCrazyy/text_classify)
 https://github.com/mathCrazyy/text_classify
 
-ע:�ð���ʹ�ò���`--fmt=txt`��������ļ���
+注:该案例使用参数`--fmt=txt`生成输出文件。
