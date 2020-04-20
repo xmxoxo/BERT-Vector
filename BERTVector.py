@@ -21,7 +21,7 @@ import traceback
 import pickle
 
 
-gblVersion = '0.3.2'
+gblVersion = '0.3.7'
 # 如果模型的文件名不同，可修改此处
 model_name = 'bert_model.ckpt'
 vocab_name = 'vocab.txt'
@@ -89,12 +89,12 @@ class bert_embdding():
 
         print('字向量共提取:%d个' % count)
 
-    # get all files and floders in a path
+    # get all files in a folder, include subfolders
     # fileExt: ['png','jpg','jpeg']
     # return: 
-    #    return a list ,include floders and files , like [['./aa'],['./aa/abc.txt']]
+    #    return a Generator ,include all files , like ['./a/abc.txt','./b/bb.txt']
     @staticmethod
-    def getFiles (workpath, fileExt = []):
+    def getAllFiles_Generator (workpath, fileExt = []):
         try:
             lstFiles = []
             lstFloders = []
@@ -102,33 +102,35 @@ class bert_embdding():
             if os.path.isdir(workpath):
                 for dirname in os.listdir(workpath) :
                     file_path = os.path.join(workpath, dirname)
-                    if os.path.isfile(file_path):
+                    #file_path = workpath  + '/' + dirname
+                    if os.path.isfile( file_path ):
                         if fileExt:
                             if dirname[dirname.rfind('.')+1:] in fileExt:
-                               lstFiles.append (file_path)
+                               yield file_path
                         else:
-                            lstFiles.append (file_path)
+                            yield file_path
                     if os.path.isdir( file_path ):
-                        lstFloders.append (file_path)      
-
+                        yield from getAllFiles_Generator(file_path, fileExt)
             elif os.path.isfile(workpath):
-                lstFiles.append(workpath)
+                yield workpath
             else:
+                #yield ''
+                pass
                 return None
-            
-            lstRet = [lstFloders,lstFiles]
-            return lstRet
         except Exception as e :
-            return None
+            print(e)
+            pass
+            #return None
+
 
     # 增加批量处理目录下的某类文件 v 0.1.2  xmxoxo 2020/3/23
     def export_path (self, path, ext=['csv','txt'], out_file=''):
         try:
-            files = self.getFiles(path,ext)
+            files = self.getAllFiles_Generator(path,ext)
             # 合并数据
             txt_all = []
             tmp = ''
-            for fn in files[1]:
+            for fn in files:
                 print('正在读取数据文件:%s' % fn)
                 with open(fn, 'r', encoding='utf-8') as f: 
                     tmp = f.read()

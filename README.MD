@@ -3,11 +3,14 @@
 
 BERT预训练模型字向量提取工具
 
-版本： v 0.3.6
+版本： v 0.3.7
 
-更新:  2020/4/20 15:04
+更新:  2020/4/20 16:39
 
 ## 升级日志 
+v0.3.7
++ 把测试程序加入到包中，可直接在命令行中使用 `BERTVector_test` 运行测试程序；
+
 v0.3.6
 + 发布到pypi中，可直接在命令行使用；
 
@@ -33,16 +36,28 @@ v0.2
 本工具直接读取预训练模型，不需要其它的依赖，同时把样本中所有出现的字符对应的字向量全部提取，
 后续的模型可以非常快速进行索引，生成自己的句向量，不再需要庞大的预训练模型或者bert-as-service服务了。
 
-工具安装：
+安装：
 
 ```
 pip install BERTVector
 ```
 
+使用：
+
+```
+BERTVector -h
+```
+
+测试：
+
+```
+BERTVector_test
+```
+
 
 ## 输出文件格式 
 
-支持txt和pkl两种文件格式，可自由选择，默认为pkl格式。 (v0.3.2版本)
+支持txt和pkl两种文件格式，可自由选择，默认为pkl格式。 (>v0.3.2版本)
 
 txt格式为：
 
@@ -119,9 +134,15 @@ BERTVector \
 
 ## 测试数据及示例
 
+直接运行以下命令即可运行测试程序：
+
+```
+BERTVector_test
+```
+
 示例文件跟随项目安装在python的目录下： `\Lib\site-packages\BERTVector\test` 
 
-先使用以下命令生成测试的向量字典：
+可使用以下命令生成测试的向量字典：
 ```
 BERTVector --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/test.txt --out_file=test/test.pkl
 ```
@@ -133,7 +154,7 @@ BERTVector --model_path=d:\\model\chinese_L-12_H-768_A-12 --in_file=test/test.tx
 
 ```
 cd test
-python load_vector.py
+python BERTVector_test.py
 ```
 
 运行结果：
