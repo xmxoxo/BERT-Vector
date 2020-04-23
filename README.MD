@@ -31,11 +31,13 @@ BERTVector -h
 BERTVector_test
 ```
 
-已提取好的向量字典文件：
-BERT_base 预训练模型 chinese_L-12_H-768_A-12 完整字向量字典，
-字符个数：8000 ，向量维度：768
-下载链接: https://pan.baidu.com/s/1QCCIqy9xLJ-rKOq83wamMg 提取码: vi3h
+这里提供已提取好的向量字典文件：
 
+BERT_base 预训练模型 chinese_L-12_H-768_A-12 完整字向量字典，
+
+字符个数：8000 ，向量维度：768
+
+下载链接: https://pan.baidu.com/s/1QCCIqy9xLJ-rKOq83wamMg 提取码: vi3h
 
 
 ## 输出文件格式 
